@@ -1,4 +1,3 @@
-// don't instantiate this directly
 class Stage {
   constructor(rootElement, nextStage) {
     this.rootElement = rootElement
@@ -14,131 +13,147 @@ class Stage {
   }
 }
 
-class VideoStage extends Stage {
-  constructor(rootElement, nextStage) {
-    super(rootElement, nextStage)
-
-    this.vidPreloadRoot = document.getElementById('vid-preload-rood')
-
-    if (!this.vidPreloadRoot) {
-      this.vidPreloadRoot = document.createElement('div')
-      this.vidPreloadRoot.setAttribute('style', `
-display: none;
-      `)
-
-      document.body.appendChild(this.vidPreloadRoot)
-    }
-
-    // set this.url when overriding
-    let vidUrl = this.url()
-
-    this.vidEl = document.createElement('video')
-    this.vidEl.setAttribute('src', vidUrl)
-    this.vidEl.setAttribute('style', `
-width: 100%;
-min-height: 100%;
-    `)
-
-    this.vidPreloadRoot.appendChild(this.vidEl)
-  }
-
-  begin() {
-    // set this.cutoff when overriding
-    let cutoff = this.cutoff()
-
-    let that = this
-    let calledNextStage = false
-
-    this.vidEl.addEventListener('pause', () => {
-      if (!calledNextStage) {
-        calledNextStage = true
-        that.nextStage()
-      }
-    })
-
-    if (cutoff) {
-      this.vidEl.addEventListener('play', () => {
-        setTimeout(function () {
-          if (!calledNextStage) {
-            calledNextStage = true
-            that.nextStage()
-          }
-        }, cutoff)
-      })
-    }
-
-    this.rootElement.appendChild(this.vidEl)
-    document.body.removeChild(this.vidPreloadRoot)
-
-    this.vidEl.play()
-  }
-
-  // override to set a time to cutoff the video
-  cutoff() {
-    return undefined
-  }
-
-  cleanUp() {
-    this.rootElement.innerHTML = ''
-  }
-}
-
 class TextStage extends Stage {
   begin() {
     // set this.text when overriding
     let text = this.text()
+    let color = this.color()
     let delay = this.delay()
-
+    let fontSize = this.fontSize()
+    let animate = this.animate()
+    let script = this.script()
     let el = document.createElement('h1')
-    el.innerText = text
+    el.innerHTML = text
     el.setAttribute('style', `
-position: relative;
-top: 40%;
-transform: translateY(-50%);
 text-align: center;
 font-family: Arial;
-font-size: 48px;
+font-size: ${fontSize};
+color: ${color}
     `)
 
-    this.rootElement.appendChild(el)
-
     let that = this
-    setTimeout(function () {
-      that.nextStage()
-    }, delay)
+
+    if (animate) {
+    	el.classList.add('animated')
+    	for (var i = animate.length - 1; i >= 0; i--) {
+    		el.classList.add(animate[i])
+    	}
+    	el.addEventListener('animationend', () => {
+    		setTimeout(function () {
+      			that.nextStage()
+    		}, delay)
+    	})
+    	this.rootElement.appendChild(el)
+    } else {
+    	setTimeout(function () {
+      		that.nextStage()
+    	}, delay)
+    	this.rootElement.appendChild(el)
+    }
+
+    if (script) {
+    	script()
+    }
+    
   }
 
   delay() {
     return 1000 // default delay
   }
 
+  color() {
+  	return "#000000"
+  }
+
+  fontSize() {
+  	return "80px"
+  }
+
+  animate() {
+  	return false
+  }
+
+  script() {
+  	return false
+  }
+
   cleanUp() {
     this.rootElement.innerHTML = ''
   }
 }
 
-class IntroPreface0 extends TextStage {
+class SUGGESTION extends TextStage {
+  text() { return 'view on computer for best experience' }
+  delay() { return '1300' }
+}
+
+class IntroPrefacePreface0 extends TextStage {
+  text() { return '.' }
+  delay() { return 450 }
+}
+
+class IntroPrefacePreface1 extends TextStage {
+  text() { return '..' }
+  delay() { return 450 }
+}
+class IntroPrefacePreface2 extends TextStage {
   text() { return '...' }
+  delay() { return 450 }
+}
+
+class IntroPreface0 extends TextStage {
+  text() { return 'loading' }
+  delay() { return 500 }
 }
 
 class IntroPreface1 extends TextStage {
-  text() { return 'initializing' }
+  text() { return 'loading mission' }
   delay() { return 500 }
 }
 
 class IntroPreface2 extends TextStage {
-  text() { return 'initializing mexico' }
+  text() { return 'loading mission' }
   delay() { return 500 }
 }
 
 class IntroPreface3 extends TextStage {
-  text() { return 'initializing mexico city' }
-  delay() { return 500 }
+  text() { return 'loading mission "' }
+  delay() { return 100 }
 }
 
 class IntroPreface4 extends TextStage {
-  text() { return '(also known as cdmx)' }
-  delay() { return 1250 }
+  text() { return 'loading mission "h' }
+  delay() { return 100 }
+}
+
+class IntroPreface5 extends TextStage {
+  text() { return 'loading mission "ha' }
+  delay() { return 100 }
+}
+
+class IntroPreface6 extends TextStage {
+  text() { return 'loading mission "hac' }
+  delay() { return 100 }
+}
+
+class IntroPreface7 extends TextStage {
+  text() { return 'loading mission "hack' }
+  delay() { return 100 }
+}
+
+class IntroPreface8 extends TextStage {
+  text() { return 'loading mission "hack b' }
+  delay() { return 100 }
+}
+
+class IntroPreface9 extends TextStage {
+  text() { return 'loading mission "hack bh' }
+  delay() { return 100 }
+}
+
+class IntroPreface10 extends TextStage {
+  text() { return 'loading mission "hack bhs"' }
+  delay() { return 1500 }
 }
 
 class Intro extends Stage {
@@ -146,7 +161,7 @@ class Intro extends Stage {
     let that = this
 
     let cdmx = document.createElement('h1')
-    cdmx.textContent = 'CDMX'
+    cdmx.textContent = 'coding'
 
     that.rootElement.appendChild(cdmx)
 
@@ -160,8 +175,8 @@ class Intro extends Stage {
 
     let fontSize = 48
 
-    let fontColor = 'pink'
-    let bgColor = 'white'
+    let fontColor = 'white'
+    let bgColor = '#595d60'
 
     let fontWeight = 'normal'
 
@@ -169,25 +184,16 @@ class Intro extends Stage {
 
     let frameAnim
     let colorChangeAnim
+    let textChangeAnim
 
     const executeFrame = function () {
-      const style = `
-font-family: Arial;
-font-size: ${fontSize}px;
-font-weight: ${fontWeight};
-color: ${fontColor};
-position: absolute;
-top: ${y}px;
-left: ${x}px;
-margin: 0;
-padding: 0;
-      `
+      const style = `font-family: Arial;font-size: ${fontSize}px;font-weight: ${fontWeight};color: ${fontColor};position: absolute;top: ${y}px;left: ${x}px;margin: 0;padding: 0;`
 
       cdmx.setAttribute('style', style)
 
-      that.rootElement.setAttribute('style', `
-background-color: ${bgColor};
+      that.rootElement.setAttribute('style', `background-color: ${bgColor};
       `)
+
 
       // below screen
       if (x + cdmx.scrollWidth > window.innerWidth) {
@@ -211,41 +217,62 @@ background-color: ${bgColor};
 
       x += xDirection * speed
       y += yDirection * speed
-      speed = speed * 1.005
-      fontSize = fontSize * 1.002
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        speed = speed * 1.015
+        fontSize = fontSize * 1.005
+      } else {
+        speed = speed * 1.005
+        fontSize = fontSize * 1.002
+      }
 
       frameAnim = setTimeout(executeFrame, frameInterval)
     }
 
     const colorChangeInterval = 1000 / 2 // every 0.5 seconds
     const executeColorChange = function () {
-      if (fontColor == 'pink') {
-        fontColor = 'black'
-        fontWeight = 'bold'
-      } else {
-        fontColor = 'pink'
-        fontWeight = 'normal'
-      }
 
-      if (bgColor == 'white') {
-        bgColor = 'pink'
+      if (bgColor == '#595d60') {
+        bgColor = '#64696b'
       } else {
-        bgColor = 'white'
+        bgColor = '#595d60'
       }
 
       colorChangeAnim = setTimeout(executeColorChange, colorChangeInterval)
     }
 
+    let textChangeInterval = 1000 / 3 // every 3rd of a second, increasing below
+    const executeTextChange = function () {
+      let current = cdmx.textContent
+      if (current == 'coding') {
+        current = 'is'
+      } else if (current == 'is') {
+        current = 'a'
+      } else if (current == 'a') {
+        current = 'superpower'
+      } else if (current = 'superpower') {
+        current = 'coding'
+      }
+
+      cdmx.textContent = current
+      textChangeInterval = textChangeInterval / 1.005
+
+      textChangeAnim = setTimeout(executeTextChange, textChangeInterval)
+    }
+
     frameAnim = setTimeout(executeFrame, frameInterval)
     colorChangeAnim = setTimeout(executeColorChange, colorChangeInterval)
+    textChangeAnim = setTimeout(executeTextChange, textChangeInterval)
+
+    that.rootElement.setAttribute('style', `background-color: #36393a;`)
 
     // cancel animation
     setTimeout(function () {
       clearTimeout(frameAnim)
       clearTimeout(colorChangeAnim)
+      clearTimeout(textChangeAnim)
 
       that.nextStage()
-    }, 17500)
+    }, 12000)
   }
 
   cleanUp() {
@@ -254,183 +281,195 @@ background-color: ${bgColor};
   }
 }
 
-class LetsBegin extends TextStage {
-  text() { return "let's begin" }
-  delay() { return 2000 }
+class Wait extends TextStage {
+  text() { return '"wait"' }
+  delay() { return 1700 }
 }
 
-class LetsBeginWarning extends TextStage {
-  text() { return 'i apologize in advance to those with slow internet connections' }
+class WhatHacking extends TextStage {
+  text() { return '"what are you hacking?"' }
+  delay() { return 1700 }
+}
+
+class Nothing extends TextStage {
+  text() { return 'nothing' }
+  delay() { return  1600 }
+  animate() { return ["rollOut", "slower"] }
+}
+
+class BUT0 extends TextStage {
+  text() { return 'but'}
+  delay() { return 100}
+}
+
+class BUT1 extends TextStage {
+  text() { return 'but.'}
+  delay() { return 200}
+}
+
+class BUT2 extends TextStage {
+  text() { return 'but..'}
+  delay() { return 300}
+}
+
+class BUT3 extends TextStage {
+  text() { return 'but...'}
+}
+
+class StartingAClub extends TextStage {
+  text() { return 'a new club is coming to bhs' }
+  animate() { return ["flash", "fast"] }
   delay() { return 2500 }
 }
 
-class SfBreakfastIntro extends TextStage {
-  text() { return 'FIRST, BREAKFAST IN SF' }
-  delay() { return 1250 }
-}
-class SfBreakfastIntro2 extends TextStage {
-  text() { return 'BAGEL SANDWICH' }
-  delay() { return 600 }
+class HackClub0 extends TextStage {
+  text() { return 'it\'s called: ' }
+  delay() { return 500 }
 }
 
-class SfBreakfast extends VideoStage {
-  url() { return 'assets/travel/1_sf_breakfast.mp4' }
-  cutoff() { return 4250 }
+class HackClub1 extends TextStage {
+  text() { return 'it\'s called: .' }
+  delay() { return 500 }
 }
 
-class SfBreakfastPost extends TextStage {
-  text() { return 'GOT IT' }
+class HackClub2 extends TextStage {
+  text() { return 'it\'s called: ..' }
+  delay() { return 500 }
 }
 
-class AirplaneTakeoffIntro extends TextStage {
-  text() { return 'AIRPLANE TIME' }
-}
-
-class AirplaneTakeoff extends VideoStage {
-  url() { return 'assets/travel/2_airplane_takeoff.mp4' }
-  cutoff() { return 1000 }
-}
-
-class AirplaneIntoClouds extends VideoStage {
-  url() { return 'assets/travel/3_airplane_into_clouds.mp4' }
-  cutoff() { return 750 }
-}
-
-class AirplaneOverCdmx extends VideoStage {
-  url() { return 'assets/travel/4_airplane_over_cdmx.mp4' }
-  cutoff() { return 750 }
-}
-
-class AirplaneCdmxClose extends VideoStage {
-  url() { return 'assets/travel/5_airplane_cdmx_close.mp4' }
-  cutoff() { return 750 }
-}
-
-class AirplaneLanding extends VideoStage {
-  url() { return 'assets/travel/6_airplane_landing.mp4' }
-  cutoff() { return 1000 }
-}
-
-class MadeIt extends TextStage {
-  text() { return 'MADE IT' }
-}
-
-class FirstStop extends TextStage {
-  text() { return 'FIRST STOP: ROMA' }
-}
-
-class FirstStopDetail extends TextStage {
-  text() { return "(it's one of the 16 buroughs)" }
-}
-
-class RomaLead extends VideoStage {
-  url() { return 'assets/arrival/1_street.mp4' }
-  cutoff() { return 5000 }
-}
-
-class RomaFountainIntro extends TextStage {
-  text() { return 'LOOK AT THIS FOUNTAIN' }
-}
-
-class RomaFountain extends VideoStage {
-  url() { return 'assets/arrival/2_fountain.mp4' }
-  cutoff() { return 3000 }
-}
-
-class RomaNeighborhoodIntro extends TextStage {
-  text() { return "LET'S CHECK OUT THE NEIGHBORHOOD" }
-}
-
-class RomaNeighborhood1 extends VideoStage {
-  url() { return 'assets/roma_streets/street_1.mp4' }
-  cutoff() { return 2000 }
-}
-
-class RomaNeighborhood2 extends VideoStage {
-  url() { return 'assets/arrival/4_people.mp4' }
-  cutoff() { return 2000 }
-}
-
-class RomaNeighborhood3 extends VideoStage {
-  url() { return 'assets/arrival/3_drive.mp4' }
-  cutoff() { return 2000 }
-}
-
-class RomaThingsToDoIntro extends TextStage {
-  text() { return 'ALL SORTS OF THINGS TO DO' }
-}
-
-class RomaBookIntro extends TextStage {
-  text() { return 'LIKE GO TO RIDICULOUS BOOK STORES' }
-}
-
-class RomaBookDetail1 extends VideoStage {
-  url() { return 'assets/arrival/5_ridiculous_book_stores.mp4' }
-  cutoff() { return 4000 }
-}
-
-class RomaBookDetail2 extends VideoStage {
-  url() { return 'assets/el_pendulo/atrium.mp4' }
-  cutoff() { return 5000 }
-}
-
-class RomaBookIntro2 extends TextStage {
-  text() { return "(this one's called el pendulo)" }
-}
-
-class RomaBookIntro3 extends TextStage {
-  text() { return 'wonder why?' }
-}
-
-class RomaBookDetail3 extends VideoStage {
-  url() { return 'assets/el_pendulo/pendulum.mp4' }
-  cutoff() { return 3000 }
-}
-
-class RomaParkIntro1 extends TextStage {
-  text() { return 'AND GO TO THE PARK' }
-}
-
-class RomaParkDetail1 extends VideoStage {
-  url() { return 'assets/park/walking.mp4' }
-  cutoff() { return 5000 }
-}
-
-class RomaParkIntro2 extends TextStage {
-  text() { return 'EAT ICE CREAM' }
-}
-
-class RomaParkDetail2 extends VideoStage {
-  url() { return 'assets/park/ice_cream.mp4'}
-  cutoff() { return 2000 }
-}
-
-class RomaParkIntro3 extends TextStage {
-  text() { return 'LOOK AT DOGS' }
-}
-
-class RomaParkDetail3 extends VideoStage {
-  url() { return 'assets/park/dog.mp4' }
-}
-
-class RomaParkIntro4 extends TextStage {
-  text() { return '(nearby streets are named after authors)' }
-}
-
-class RomaParkDetail4 extends VideoStage {
-  url() { return 'assets/park/author_streets.mov' }
-}
-
-class FinalText1 extends TextStage {
-  text() { return "ok that's all for now" }
-}
-
-class FinalText2 extends TextStage {
-  text() { return "more content will by added by thursday" }
+class HackClub3 extends TextStage {
+  text() { return 'it\'s called: ...' }
   delay() { return 2000 }
 }
 
-class FinalText3 extends TextStage {
-  text() { return "2018-04-26" }
-  delay() { return 2000 }
+class bhsHC0 extends TextStage {
+  text() { return 'B' }
+  delay() { return 100 }
+}
+
+class bhsHC1 extends TextStage {
+  text() { return 'Be' }
+  delay() { return 100 }
+}
+
+class bhsHC2 extends TextStage {
+  text() { return 'Ber' }
+  delay() { return 100 }
+}
+
+class bhsHC3 extends TextStage {
+  text() { return 'Berk' }
+  delay() { return 100 }
+}
+
+class bhsHC4 extends TextStage {
+  text() { return 'Berkl' }
+  delay() { return 100 }
+}
+
+class bhsHC5 extends TextStage {
+  text() { return 'Berkle' }
+  delay() { return 100 }
+}
+
+class bhsHC6 extends TextStage {
+  text() { return 'Berkley' }
+  delay() { return 100 }
+}
+
+class bhsHC7 extends TextStage {
+  text() { return 'Berkley H' }
+  delay() { return 100 }
+}
+
+class bhsHC8 extends TextStage {
+  text() { return 'Berkley Ha' }
+  delay() { return 100 }
+}
+
+class bhsHC9 extends TextStage {
+  text() { return 'Berkley Hac' }
+  delay() { return 100 }
+}
+
+class bhsHC10 extends TextStage {
+  text() { return 'Berkley Hack' }
+  delay() { return 100 }
+}
+
+class bhsHC11 extends TextStage {
+  text() { return 'Berkley Hack C' }
+  delay() { return 100 }
+}
+
+class bhsHC12 extends TextStage {
+  text() { return 'Berkley Hack Cl' }
+  delay() { return 100 }
+}
+
+class bhsHC13 extends TextStage {
+  text() { return 'Berkley Hack Clu' }
+  delay() { return 100 }
+}
+
+class bhsHC14 extends TextStage {
+  text() { return 'Berkley Hack Club' }
+  animate() { return ["tada", "fast"] }
+  delay() { return 200 }
+}
+
+class fun extends TextStage {
+  text() { return 'you\'ll learn how to code and make cool things' }
+  delay() { return 2300 }
+}
+
+class join extends TextStage {
+  text() { return 'i really think you should join' }
+  delay() { return 1700 }
+}
+
+class hurt extends TextStage {
+  text() { return 'it won\'t hurt' }
+  delay() { return 1500 }
+  animate() { return ["hinge", "slow"] }
+}
+
+class submit extends TextStage {
+	text() { return `
+		We'll text you soon.
+		<br>
+		<input type="email" id="email" name="email" placeholder="example@gmail.com" style="font-size: 50px; text-align: center"><br>
+		<button id="submit" style="font-size: 50px; border-radius: 15px;"><p style="
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin: 0px;
+    ">Submit</p></button>
+		<p style="font-size: 20px">Please use an email that you actually check.</p>
+
+		`}
+
+	script() { return function() {
+			$("#submit").click(() => {
+				axios.post('https://formcarry.com/s/x2oPwUGIWA2', {number: $("#email").val()}).then(() => {
+					$("#root").empty()
+
+			$("#root").append(`
+					<h1 style="text-align: center;
+font-family: Arial;
+font-size: 80px;"> Thanks! We'll email you soon!
+</h1>
+
+
+
+				`)
+				})
+
+			})
+
+
+
+		}
+	}
 }
