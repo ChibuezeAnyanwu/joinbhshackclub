@@ -25,10 +25,10 @@ class TextStage extends Stage {
     let el = document.createElement('h1')
     el.innerHTML = text
     el.setAttribute('style', `
-text-align: center;
-font-family: Arial;
-font-size: ${fontSize};
-color: ${color}
+      text-align: center;
+      font-family: Arial;
+      font-size: ${fontSize};
+      color: white
     `)
 
     let that = this
@@ -219,10 +219,10 @@ class Intro extends Stage {
       y += yDirection * speed
       if (/Mobi|Android/i.test(navigator.userAgent)) {
         speed = speed * 1.015
-        fontSize = fontSize * 1.005
+        fontSize = fontSize * 1.006
       } else {
         speed = speed * 1.005
-        fontSize = fontSize * 1.002
+        fontSize = fontSize * 1.003
       }
 
       frameAnim = setTimeout(executeFrame, frameInterval)
@@ -286,34 +286,14 @@ class Wait extends TextStage {
   delay() { return 1700 }
 }
 
-class WhatHacking extends TextStage {
-  text() { return '"what are you hacking?"' }
+class WhatFor extends TextStage {
+  text() { return '"what is this for?"' }
   delay() { return 1700 }
 }
 
-class Nothing extends TextStage {
-  text() { return 'nothing' }
-  delay() { return  1600 }
-  animate() { return ["rollOut", "slower"] }
-}
-
-class BUT0 extends TextStage {
-  text() { return 'but'}
-  delay() { return 100}
-}
-
-class BUT1 extends TextStage {
-  text() { return 'but.'}
-  delay() { return 200}
-}
-
-class BUT2 extends TextStage {
-  text() { return 'but..'}
-  delay() { return 300}
-}
-
-class BUT3 extends TextStage {
-  text() { return 'but...'}
+class gladYouAsked extends TextStage {
+  text() { return 'i\'m glad you asked.'}
+  animate() { return ["lightSpeedIn", "fast"]}
 }
 
 class StartingAClub extends TextStage {
@@ -344,99 +324,136 @@ class HackClub3 extends TextStage {
 
 class bhsHC0 extends TextStage {
   text() { return 'B' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC1 extends TextStage {
   text() { return 'Be' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC2 extends TextStage {
   text() { return 'Ber' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC3 extends TextStage {
   text() { return 'Berk' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC4 extends TextStage {
   text() { return 'Berkl' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC5 extends TextStage {
   text() { return 'Berkle' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC6 extends TextStage {
   text() { return 'Berkley' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC7 extends TextStage {
   text() { return 'Berkley H' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC8 extends TextStage {
   text() { return 'Berkley Ha' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC9 extends TextStage {
   text() { return 'Berkley Hac' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC10 extends TextStage {
   text() { return 'Berkley Hack' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC11 extends TextStage {
   text() { return 'Berkley Hack C' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC12 extends TextStage {
   text() { return 'Berkley Hack Cl' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC13 extends TextStage {
   text() { return 'Berkley Hack Clu' }
-  delay() { return 100 }
+  delay() { return 50 }
 }
 
 class bhsHC14 extends TextStage {
   text() { return 'Berkley Hack Club' }
   animate() { return ["tada", "fast"] }
-  delay() { return 200 }
+  delay() { return 1400 }
+}
+
+class whatsthat extends TextStage {
+  text() { return '"what\'s that?"' }
+  delay() { return 1800 }
+}
+
+class onceagain extends TextStage {
+  text() { return "what a great question to ask." }
+  delay() { return 2210 }
+}
+
+class membersLearn extends TextStage {
+  text() { return "members will learn how to make..." }
+  delay() { return 1500 }
+  animate() { return ["fadeInDownBig", "fast"] }
+}
+
+class websites extends TextStage {
+  text() { return "websites" }
+  animate() { return ["zoomInLeft", "fast"] }
+}
+
+class games extends TextStage {
+  text() { return "games" }
+  animate() { return ["zoomInUp", "fast"] }
+}
+
+class apps extends TextStage {
+  text() { return "and apps that work on your phone!"}
+  delay() { return 1800 }
+  animate() { return ["zoomInRight", "fast"] }
 }
 
 class fun extends TextStage {
-  text() { return 'you\'ll learn how to code and make cool things' }
-  delay() { return 2300 }
+  text() { return 'so basically, you\'ll learn how to make cool things' }
+  delay() { return 3100 }
+}
+
+class donthavetoknow extends TextStage {
+  text() { return 'you don\'t even have to know how to code!' }
+  delay() { return 2900 }
 }
 
 class join extends TextStage {
-  text() { return 'i really think you should join' }
-  delay() { return 1700 }
+  text() { return 'i think you should join' }
+  delay() { return 2000 }
 }
 
 class hurt extends TextStage {
-  text() { return 'it won\'t hurt' }
+  text() { return 'it can\'t hurt' }
   delay() { return 1500 }
   animate() { return ["hinge", "slow"] }
 }
 
 class submit extends TextStage {
-	text() { return `
-		We'll text you soon.
+	text() { return `<div id="emailUI">
+		We'll email you soon.
 		<br>
 		<input type="email" id="email" name="email" placeholder="example@gmail.com" style="font-size: 50px; text-align: center"><br>
 		<button id="submit" style="font-size: 50px; border-radius: 15px;"><p style="
@@ -447,29 +464,39 @@ class submit extends TextStage {
     margin: 0px;
     ">Submit</p></button>
 		<p style="font-size: 20px">Please use an email that you actually check.</p>
-
+    <button id="remind" style="font-size: 25px; border-radius: 15px;"><p style="
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin: 0px;
+    ">Join Remind Instead</p></button></div>
 		`}
 
-	script() { return function() {
+    animate() { return ["lightSpeedIn", "slower"] }
+
+	  script() { return function() {
 			$("#submit").click(() => {
-				axios.post('https://formcarry.com/s/x2oPwUGIWA2', {number: $("#email").val()}).then(() => {
+				axios.post('https://formcarry.com/s/x2oPwUGIWA2', {email: $("#email").val()}).then(() => {
 					$("#root").empty()
-
-			$("#root").append(`
-					<h1 style="text-align: center;
-font-family: Arial;
-font-size: 80px;"> Thanks! We'll email you soon!
-</h1>
-
-
-
-				`)
+			    $("#root").append(`<div id="remindLaterUI">
+				  	<h1 style="text-align: center;
+            font-family: Arial;
+            font-size: 80px;"> Thanks! We'll email you soon! 😊
+            </h1></div>
+				  `)
 				})
-
 			})
 
-
-
+      $("#remind").click(() => {
+        $("#root").empty()
+        $("#root").append(`<div id="joinRemindUI">
+          <h1 style = "text-align: center;
+          font-family: Arial;
+          color: white;
+          font-size: 60px;"><a href="http://remind.com/join/berkleyhc" style="color:white"> Click here to join the remind! </a></h1></div>
+        `)
+			})
 		}
 	}
 }
