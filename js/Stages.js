@@ -173,7 +173,7 @@ class Intro extends Stage {
     let x = 0
     let y = 0
 
-    let fontSize = 48
+    let fontSize = 42
 
     let fontColor = 'white'
     let bgColor = '#595d60'
@@ -218,8 +218,8 @@ class Intro extends Stage {
       x += xDirection * speed
       y += yDirection * speed
       if (/Mobi|Android/i.test(navigator.userAgent)) {
-        speed = speed * 1.015
-        fontSize = fontSize * 1.006
+        speed = speed * 1.005
+        fontSize = fontSize * 1.003
       } else {
         speed = speed * 1.005
         fontSize = fontSize * 1.003
